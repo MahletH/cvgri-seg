@@ -1,6 +1,0 @@
-flask
-torch
-transformers
-matplotlib
-pillow
-flask-cors
