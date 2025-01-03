@@ -61,9 +61,22 @@ def segment_image_new(model,image_path, prompt):
         image.size
     )
     mask = np.array(mask_image)
-    highlighted_image = np.array(image)
-    highlighted_image[mask == 0] = [0, 0, 0]  # Black out unsegmented areas
+    # Convert image to numpy array
+    image_array = np.array(image)
 
+    highlighted_image = image_array.copy()
+
+    # Blue-Violet color for highlighting
+    blue_violet = np.array([226, 43, 138], dtype=np.uint8)
+
+    # Apply alpha blending to the segmented area
+    alpha = 0.5
+    for c in range(3):  # Loop over each color channel (R, G, B)
+        highlighted_image[:, :, c] = np.where(
+            mask > 0,  # Where the mask is greater than 0 (segmented region)
+            (1 - alpha) * image_array[:, :, c] + alpha * blue_violet[c],  # Blend with blue-violet
+            image_array[:, :, c]  # Else, keep original color
+        )
     segmented_image =  Image.fromarray(highlighted_image)
     mask_path = os.path.join(OUTPUT_DIR, f"segmented_{os.path.basename(image_path)}")
     segmented_image.save(mask_path)
