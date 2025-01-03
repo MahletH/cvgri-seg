@@ -12,7 +12,7 @@ from cloudary_service import upload_image
 # Ensure the correct path for the models package
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from models.clipseg_model import load_clipseg_model, segment_image
+from models.clipseg_model import load_clipseg_model, segment_image, segment_image_new
 
 app = Flask(__name__)
 
@@ -55,7 +55,7 @@ def segment():
         file.save(filepath)
 
         try:
-            segmented_image = segment_image(model, filepath, prompt)
+            segmented_image = segment_image_new(model, filepath, prompt)
             image_path = upload_image(segmented_image)
             return jsonify({"segmented_image": image_path}), 200
         except Exception as e:
