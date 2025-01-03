@@ -1,105 +1,99 @@
-# Web App - Zero-Shot Image Segmentation
+# Image Segmentation Chatbot
 
+A chatbot web app capable of accepting both an image and a prompt (e.g., "Dog"). The chatbot displays the segmented image as output.
 
-This is a simple Flask-based web app that performs zero-shot image segmentation. It accepts an image and a text prompt from the user, processes them using a pre-trained model, and returns the segmented image.
+## Overview
 
-## Features
-
-- Upload an image.
-- Provide a text prompt for segmentation (e.g., "Segment the car").
-- View the segmented result with the original image and the segmented masks.
+This application allows users to interact with an AI-powered chatbot for image segmentation. Users can upload an image and provide a prompt to identify and segment specific objects or areas in the image.
 
 ## Technologies
 
-- **Flask**: Web framework for Python.
-- **Transformers**: Hugging Face Transformers library for pre-trained models.
-- **Torch**: PyTorch for running the model.
-- **Matplotlib**: For visualizing and saving the segmentation results.
-- **React.js**: Frontend for handling user interactions.
+- HTML
+- CSS
+- JavaScript
+- Flask
+- Transformers
+- PyTorch
+
+## File Structure
+```bash
+image-segmentation-app/
+│
+├── app/
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── styles.css         # Styling for the chatbot interface
+│   │   ├── js/
+│   │   │   └── script.js          # Optional frontend interactivity scripts
+│   │   └── uploads/               # Storage for uploaded images
+│   │       └── (uploaded images)
+│   ├── templates/
+│   │   └── index.html             # Frontend chatbot interface
+│   └── main.py                    # Backend logic with Flask
+│
+├── models/
+│   └── clipseg_model.py           # Image segmentation model using CLIPSeg
+│
+├── requirements.txt               # Python dependencies
+└── README.md                      # Project documentation
+```
 
 ## Installation
 
-### 1. Clone the repository
+Follow these steps to set up the project:
 
+### Clone the Repository
 ```bash
-git https://github.com/MahletH/cvgri-seg.git
-cd cvgri_backend
+git clone -b image-segmentation-app https://github.com/MahletH/cvgri-seg.git
+cd cvgri-seg
 ```
 
-### 2. Set up the backend (Flask)
+### Create a Virtual Environment
 
-#### Create a virtual environment
-
+1. Install virtualenv (if not already installed):
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On macOS/Linux
-# or
-venv\Scripts\activate  # On Windows
+pip install virtualenv
 ```
 
-#### Install backend dependencies
+2. Create and activate the virtual environment:
 
+- On macOS/Linux:
+```bash
+virtualenv -p python3.11 venv
+source venv/bin/activate
+```
+
+- On Windows
+```bash
+virtualenv -p python3.11 venv
+venv\Scripts\activate
+```
+**Note**: Python 3.11 is selected because PyTorch currently does not support Python 3.13 (latest version).
+
+### Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Set up the frontend (React)
-
-#### Navigate to the `cvgri_web` folder
-
+## Running the Application
 ```bash
-cd cvgri_web
+python ./app/main.py
 ```
 
-#### Install frontend dependencies
+The application will run on http://127.0.0.1:5000.
 
-```bash
-npm install
-```
+## Features
 
-### 4. Running the application
+- Accepts both image and text prompts for segmentation.
 
-#### Start the Flask backend
+- Utilizes the CLIPSeg model for advanced image segmentation.
 
-```bash
-python app.py
-```
+- Simple and intuitive user interface.
 
-The backend will be running on `http://127.0.0.1:5000`.
+## Future Enhancements
 
-#### Start the React frontend
+- Add support for multiple segmentation models.
 
-```bash
-npm start
-```
+- Enable real-time segmentation previews.
 
-The frontend will be running on `http://localhost:3000`.
-
-## Usage
-
-1. Open the app in your browser (`http://localhost:3000`).
-2. Upload an image and enter a prompt (e.g., "Segment the car").
-3. Click **Segment Image** to see the segmented result.
-
-## Folder Structure
-
-```
-flask-image-segmentation/
-|--- cvgri_backend/
-|    |--- app.py
-|    |--- requirements.txt
-|    ├── segmented/          # Output images
-│         └── segmented_output.png
-|--- cvgri_web/             # React frontend
-│   └── src/
-│   └── public/
-└── README.md
-```
-
-## Contributing
-
-1. Fork this repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to your branch (`git push origin feature-branch`).
-5. Create a pull request.
+- Enhance chatbot interactivity and conversational abilities.
