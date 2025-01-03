@@ -16,6 +16,13 @@
             <label for="prompt">Enter Prompt:</label>
             <input type="text" id="prompt" name="prompt" placeholder="Describe the object to segment" required>
 
+            <label for="model_type">Select Model:</label>
+            <select id="model_type" name="model_type" required>
+                <option value="" disabled selected>Select a model</option>
+                <option value="clipseg">CLIPSeg</option>
+                <option value="lang_sam">LangSAM</option>
+            </select>
+
             <button type="submit">Segment Image</button>
         </form>
         <div id="result"></div>
