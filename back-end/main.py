@@ -1,7 +1,12 @@
+"""
+This module provides a Flask web application for image segmentation using the CLIPSeg model.
+"""
+
 from flask import Flask, render_template, request, jsonify
 import os
 import sys
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 from cloudary_service import upload_image
 
 # Ensure the correct path for the models package
@@ -10,6 +15,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from models.clipseg_model import load_clipseg_model, segment_image
 
 app = Flask(__name__)
+
+app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads")
+CORS(app)
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads")
 app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg"}
 
