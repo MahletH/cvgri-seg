@@ -65,7 +65,7 @@ source venv/bin/activate
 
 - On Windows
 ```bash
-python3 -m venv venv
+virtualenv -p python3.11 venv
 venv\Scripts\activate
 ```
 **Note**: Python 3.11 is selected because PyTorch currently does not support Python 3.13 (latest version).
