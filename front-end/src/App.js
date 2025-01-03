@@ -75,15 +75,6 @@ function App() {
           flexDirection="column"
           alignItems="center"
         >
-          <TextField
-            label="Enter a Prompt (Optional)"
-            variant="outlined"
-            fullWidth
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            style={{ marginBottom: "20px", maxWidth: "500px" }}
-          />
-
           <Button
             variant="contained"
             component="label"
@@ -98,6 +89,15 @@ function App() {
               onChange={handleImageUpload}
             />
           </Button>
+          
+          <TextField
+            label="Enter a Prompt (Optional)"
+            variant="outlined"
+            fullWidth
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            style={{ marginBottom: "20px", maxWidth: "500px" }}
+          />
 
           <Button
             variant="contained"
