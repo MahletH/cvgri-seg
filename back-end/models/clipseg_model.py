@@ -66,34 +66,26 @@ def segment_image_new(model,image_path, prompt):
     
     highlighted_image = apply_violet_blue_mask(image_array, mask)
     segmented_image = Image.fromarray(highlighted_image)
-    # highlighted_image[mask == 0] = [0, 0, 0]  # Black out unsegmented areas
-
     
     mask_path = os.path.join(OUTPUT_DIR, f"segmented_{os.path.basename(image_path)}")
     segmented_image.save(mask_path)
 
     return mask_path
 
-def apply_violet_blue_mask(image_array, circle_mask):
-    circle_mask = cv2.resize(circle_mask, (image_array.shape[1], image_array.shape[0]))
-    
-    if len(circle_mask.shape) == 3:
-        circle_mask = cv2.cvtColor(circle_mask, cv2.COLOR_BGR2GRAY)
-
-    # Convert the mask to binary (0 and 255 values)
-    circle_mask = (circle_mask > 0).astype(np.uint8) * 255
-
-    blue_violet = np.array([226, 43, 138], dtype=np.uint8)
+def apply_violet_blue_mask(image_array, mask):
 
     final_image = image_array.copy()
 
-    alpha = 0.5
-    for c in range(3):
-        final_image[:, :, c] = np.where(
-            circle_mask > 0,
-            (1 - alpha) * image_array[:, :, c] + alpha * blue_violet[c],
-            image_array[:, :, c]
-        ).astype(np.uint8)
+    # Blue-Violet color for highlighting
+    blue_violet = np.array([226, 43, 138], dtype=np.uint8)
 
+    # Apply alpha blending to the segmented area
+    alpha = 0.5
+    for c in range(3):  # Loop over each color channel (R, G, B)
+        final_image[:, :, c] = np.where(
+            mask > 0,  # Where the mask is greater than 0 (segmented region)
+            (1 - alpha) * image_array[:, :, c] + alpha * blue_violet[c],  # Blend with blue-violet
+            image_array[:, :, c]  # Else, keep original color
+        )
     return final_image
 
