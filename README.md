@@ -1,5 +1,13 @@
-I want
-to test both the frontend and backend, follow these steps:
+# Image Segmentation Chatbot
+
+A chatbot web app capable of accepting both an image and a prompt (e.g., "Dog"). The chatbot displays the segmented image as output.
+
+## Overview
+
+This application allows users to interact with an AI-powered chatbot for image segmentation. Users can upload an image and provide a prompt to identify and segment specific objects or areas in the image.
+
+![UI](UI.png)
+
 
 ## Installation
 1. Clone the repository:
