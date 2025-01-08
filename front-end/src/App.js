@@ -13,6 +13,7 @@ import {
   CssBaseline,
   Select,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 
 function App() {
@@ -20,48 +21,37 @@ function App() {
   const [processedImage, setProcessedImage] = useState(null);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
-  const [model, setModel] = useState("Select a Model");
+  const [model, setModel] = useState("");
+
+  const API_URL = "http://127.0.0.1:5000/api/segment";
 
   const handleImageUpload = (event) => {
     setSelectedImage(event.target.files[0]);
-    setProcessedImage(null); // Clear the processed image if a new one is uploaded
+    setProcessedImage(null);
   };
 
-  const handleSelection = (event) => { 
-    setModel(event.target.value);
-  }
-
   const handleProcessImage = async () => {
-    if (!selectedImage) {
-      alert("Please select an image first!");
-      return;
-    }
-
-    if (model === "Select a Model") {
-      alert("Please select a model first!");
+    if (!selectedImage || !model) {
+      alert("Please ensure both an image and a model are selected!");
       return;
     }
 
     const formData = new FormData();
     formData.append("image", selectedImage);
     formData.append("prompt", prompt);
-    formData.append("model", model) // Add the prompt to the form data
+    formData.append("model", model);
 
+    setLoading(true);
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:5000/api/segment",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Response received from the server:", response);
+      const response = await axios.post(API_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       setProcessedImage(response.data.segmented_image);
-      console.log("Processed image set successfully.");
     } catch (error) {
       console.error("Error processing image:", error);
+      alert(error.response?.data?.error || "An error occurred while processing the image.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,7 +60,7 @@ function App() {
       <CssBaseline />
       <Container maxWidth="md" style={{ marginTop: "50px" }}>
         <Typography variant="h4" align="center" gutterBottom>
-          Image Segmentation with CLIP
+          Language Guided Image Segmentation
         </Typography>
         <Typography
           variant="subtitle1"
@@ -78,16 +68,10 @@ function App() {
           color="textSecondary"
           gutterBottom
         >
-          Upload an image, provide a prompt, and let CLIP Segment it for you!
+          Upload an image, provide a prompt, and let the model segment it for you!
         </Typography>
 
-        <Box
-          mt={4}
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
-          alignItems="center"
-        >
+        <Box mt={4} display="flex" flexDirection="column" alignItems="center">
           <Button
             variant="contained"
             component="label"
@@ -111,30 +95,29 @@ function App() {
             onChange={(e) => setPrompt(e.target.value)}
             style={{ marginBottom: "20px", maxWidth: "500px" }}
           />
-          
+
           <Select
             value={model}
-            onChange={handleSelection}
+            onChange={(e) => setModel(e.target.value)}
+            displayEmpty
             fullWidth
             style={{ marginBottom: "20px", maxWidth: "500px" }}
-          > 
-            <MenuItem value="Select a Model" disabled>Select a Model</MenuItem>
+          >
+            <MenuItem value="" disabled>
+              Select a Model
+            </MenuItem>
             <MenuItem value="clipseg">CLIPSeg</MenuItem>
             <MenuItem value="langsam">LangSAM</MenuItem>
           </Select>
-          
+
           <Button
             variant="contained"
             color="success"
-            onClick={async () => {
-              setLoading(true);
-              await handleProcessImage();
-              setLoading(false);
-            }}
-            disabled={!selectedImage || loading || model === "Select a Model"}
+            onClick={handleProcessImage}
+            disabled={!selectedImage || loading || !model}
             style={{ marginBottom: "20px" }}
           >
-            {loading ? "Processing..." : "Process Image"}
+            {loading ? <CircularProgress size={24} /> : "Process Image"}
           </Button>
         </Box>
 

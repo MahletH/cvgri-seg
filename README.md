@@ -2,20 +2,19 @@ I want
 to test both the frontend and backend, follow these steps:
 
 ## Installation
-
-### Backend
-
 1. Clone the repository:
     ```sh
     git clone https://github.com/MahletH/cvgri-seg
     ```
+### Backend
 2. Navigate to the backend directory:
     ```sh
     cd back-end
     ```
 3. Create a virtual environment:
     ```sh
-    python3.11 -m venv venv
+    pip install virtualenv
+    virtualenv -p python3.11 venv
     ```
 4. Activate the virtual environment:
     - On macOS/Linux:
@@ -28,13 +27,7 @@ to test both the frontend and backend, follow these steps:
         ```
 5. Install the dependencies:
     ```sh
-    pip install Flask
-    pip install Flask-Cors
-    pip install requests
-    pip install torch
-    pip install transformers
-    pip install pillow
-    pip install opencv-python
+    pip install -r requirements.txt
     ```
 6. Start the backend server:
     ```sh
@@ -42,11 +35,6 @@ to test both the frontend and backend, follow these steps:
     ```
 
 ### Frontend
-
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/MahletH/cvgri-seg
-    ```
 2. Navigate to the frontend directory:
     ```sh
     cd front-end

@@ -69,6 +69,7 @@ def segment_image_new(model,image_path, prompt):
     
     mask_path = os.path.join(OUTPUT_DIR, f"segmented_{os.path.basename(image_path)}")
     segmented_image.save(mask_path)
+    print("CLIPSeg: Segmented image saved at:", mask_path)
 
     return mask_path
 
