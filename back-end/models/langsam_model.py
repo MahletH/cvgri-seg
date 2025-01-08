@@ -100,7 +100,9 @@ def load_model_hf(repo_id, filename, ckpt_config_filename, device='cpu'):
 def langsam_output_path(class_name, filepath, prompt):
     # Initialize LangSAM model
     lang_sam_model = class_name
+    print("*"*50)
     print(f"LangSAM model initialized with SAM type: {lang_sam_model.sam_type}")
+    print("*"*50)
 
     # Load image and perform prediction
     image_pil = Image.open(filepath).convert("RGB")
@@ -118,6 +120,8 @@ def langsam_output_path(class_name, filepath, prompt):
 
     # Save and return the segmented image
     output_path = lang_sam_model.save_segmented_image(image_pil, masks, boxes, filepath)
+    print("LangSAM: Segmented image saved at:", output_path)
+
     return output_path
 
 def langsam_output(class_name, filepath, prompt):
