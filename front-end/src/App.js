@@ -11,6 +11,8 @@ import {
   CardMedia,
   Grid,
   CssBaseline,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 function App() {
@@ -18,11 +20,16 @@ function App() {
   const [processedImage, setProcessedImage] = useState(null);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const [model, setModel] = useState("Select a Model");
 
   const handleImageUpload = (event) => {
     setSelectedImage(event.target.files[0]);
     setProcessedImage(null); // Clear the processed image if a new one is uploaded
   };
+
+  const handleSelection = (event) => { 
+    setModel(event.target.value);
+  }
 
   const handleProcessImage = async () => {
     if (!selectedImage) {
@@ -30,9 +37,15 @@ function App() {
       return;
     }
 
+    if (model === "Select a Model") {
+      alert("Please select a model first!");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", selectedImage);
-    formData.append("prompt", prompt); // Add the prompt to the form data
+    formData.append("prompt", prompt);
+    formData.append("model", model) // Add the prompt to the form data
 
     try {
       const response = await axios.post(
@@ -89,7 +102,7 @@ function App() {
               onChange={handleImageUpload}
             />
           </Button>
-          
+
           <TextField
             label="Enter a Prompt (Optional)"
             variant="outlined"
@@ -98,7 +111,18 @@ function App() {
             onChange={(e) => setPrompt(e.target.value)}
             style={{ marginBottom: "20px", maxWidth: "500px" }}
           />
-
+          
+          <Select
+            value={model}
+            onChange={handleSelection}
+            fullWidth
+            style={{ marginBottom: "20px", maxWidth: "500px" }}
+          > 
+            <MenuItem value="Select a Model" disabled>Select a Model</MenuItem>
+            <MenuItem value="clipseg">CLIPSeg</MenuItem>
+            <MenuItem value="langsam">LangSAM</MenuItem>
+          </Select>
+          
           <Button
             variant="contained"
             color="success"
@@ -107,7 +131,7 @@ function App() {
               await handleProcessImage();
               setLoading(false);
             }}
-            disabled={!selectedImage || loading}
+            disabled={!selectedImage || loading || model === "Select a Model"}
             style={{ marginBottom: "20px" }}
           >
             {loading ? "Processing..." : "Process Image"}
