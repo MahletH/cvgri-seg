@@ -8,10 +8,10 @@ import sys
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from cloudary_service import upload_image
-
 # Ensure the correct path for the models package
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from models.langsam_model import LangSAM, langsam_output
 from models.clipseg_model import load_clipseg_model, segment_image, segment_image_new
 
 app = Flask(__name__)
@@ -25,7 +25,7 @@ app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg"}
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # Load the CLIPSeg model
-model = load_clipseg_model()
+models = {"clipseg": load_clipseg_model(), "lang_sam": LangSAM()}
 
 
 def allowed_file(filename):
@@ -42,11 +42,12 @@ def index():
 
 @app.route("/api/segment", methods=["POST"])
 def segment():
-    if "image" not in request.files or "prompt" not in request.form:
+    if "image" not in request.files or "prompt" not in request.form or "model" not in request.form:
         return jsonify({"error": "Image and prompt are required"}), 400
 
     file = request.files["image"]
     prompt = request.form["prompt"]
+    model_type = request.form["model"]
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -55,7 +56,13 @@ def segment():
         file.save(filepath)
 
         try:
-            segmented_image = segment_image_new(model, filepath, prompt)
+            if model_type == "langsam":
+                segmented_image = langsam_output(models.get('langsam'), filepath, prompt)
+            elif model_type == "clipseg":
+                segmented_image = segment_image_new(models.get('clipseg'), filepath, prompt)
+            else:
+                return jsonify({"error": "Invalid model type"}), 400
+
             image_path = upload_image(segmented_image)
             return jsonify({"segmented_image": image_path}), 200
         except Exception as e:
