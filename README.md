@@ -1,99 +1,71 @@
-# Image Segmentation Chatbot
-
-A chatbot web app capable of accepting both an image and a prompt (e.g., "Dog"). The chatbot displays the segmented image as output.
-
-## Overview
-
-This application allows users to interact with an AI-powered chatbot for image segmentation. Users can upload an image and provide a prompt to identify and segment specific objects or areas in the image.
-
-## Technologies
-
-- HTML
-- CSS
-- JavaScript
-- Flask
-- Transformers
-- PyTorch
-
-## File Structure
-```bash
-image-segmentation-app/
-│
-├── app/
-│   ├── static/
-│   │   ├── css/
-│   │   │   └── styles.css         # Styling for the chatbot interface
-│   │   ├── js/
-│   │   │   └── script.js          # Optional frontend interactivity scripts
-│   │   └── uploads/               # Storage for uploaded images
-│   │       └── (uploaded images)
-│   ├── templates/
-│   │   └── index.html             # Frontend chatbot interface
-│   └── main.py                    # Backend logic with Flask
-│
-├── models/
-│   └── clipseg_model.py           # Image segmentation model using CLIPSeg
-│
-├── requirements.txt               # Python dependencies
-└── README.md                      # Project documentation
-```
+I want
+to test both the frontend and backend, follow these steps:
 
 ## Installation
 
-Follow these steps to set up the project:
+### Backend
 
-### Clone the Repository
-```bash
-git clone -b image-segmentation-app https://github.com/MahletH/cvgri-seg.git
-cd cvgri-seg
-```
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/MahletH/cvgri-seg
+    ```
+2. Navigate to the backend directory:
+    ```sh
+    cd back-end
+    ```
+3. Create a virtual environment:
+    ```sh
+    python3.11 -m venv venv
+    ```
+4. Activate the virtual environment:
+    - On macOS/Linux:
+        ```sh
+        source venv/bin/activate
+        ```
+    - On Windows:
+        ```sh
+        .\venv\Scripts\activate
+        ```
+5. Install the dependencies:
+    ```sh
+    pip install Flask
+    pip install Flask-Cors
+    pip install requests
+    pip install torch
+    pip install transformers
+    pip install pillow
+    pip install opencv-python
+    ```
+6. Start the backend server:
+    ```sh
+    python main.py
+    ```
 
-### Create a Virtual Environment
+### Frontend
 
-1. Install virtualenv (if not already installed):
-```bash
-pip install virtualenv
-```
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/MahletH/cvgri-seg
+    ```
+2. Navigate to the frontend directory:
+    ```sh
+    cd front-end
+    ```
+3. Install the dependencies:
+    ```sh
+    npm install
+    ```
+4. Start the frontend server:
+    ```sh
+    npm start
+    ```
 
-2. Create and activate the virtual environment:
+## Testing
 
-- On macOS/Linux:
-```bash
-virtualenv -p python3.11 venv
-source venv/bin/activate
-```
+1. Ensure both the backend and frontend servers are running.
+2. Open your browser and navigate to `http://localhost:3000` to test the frontend.
+3. Use tools like Postman or curl to test the backend endpoints.
 
-- On Windows
-```bash
-virtualenv -p python3.11 venv
-venv\Scripts\activate
-```
-**Note**: Python 3.11 is selected because PyTorch currently does not support Python 3.13 (latest version).
+## Conclusion
 
-### Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-## Running the Application
-```bash
-python ./app/main.py
-```
-
-The application will run on http://127.0.0.1:5000.
-
-## Features
-
-- Accepts both image and text prompts for segmentation.
-
-- Utilizes the CLIPSeg model for advanced image segmentation.
-
-- Simple and intuitive user interface.
-
-## Future Enhancements
-
-- Add support for multiple segmentation models.
-
-- Enable real-time segmentation previews.
-
-- Enhance chatbot interactivity and conversational abilities.
+You have successfully set up and tested both the frontend and backend.
